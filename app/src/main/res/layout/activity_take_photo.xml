@@ -6,12 +6,18 @@
     android:layout_height="match_parent"
     tools:context="com.wojdor.sharemoments.application.gallery.TakePhotoActivity">
 
+    <FrameLayout
+        android:id="@+id/takePhotoPreviewFl"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
+
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/galleryAddFab"
+        android:id="@+id/takePhotoTakePhotoFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/activity_gallery_add_fab_margin"
-        android:src="@drawable/ic_add"
+        android:src="@drawable/ic_photo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
