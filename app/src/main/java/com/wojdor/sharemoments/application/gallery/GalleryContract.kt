@@ -5,7 +5,13 @@ import com.wojdor.sharemoments.application.base.BaseView
 
 interface GalleryContract {
 
-    interface View : BaseView<Presenter>
+    interface View : BaseView<Presenter> {
 
-    interface Presenter : BasePresenter
+        fun openAddPhoto()
+    }
+
+    interface Presenter : BasePresenter<View> {
+
+        fun showAddPhoto()
+    }
 }
