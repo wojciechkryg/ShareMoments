@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wojdor.sharemoments.application.gallery.TakePhotoActivity">
+    android:background="@android:color/black"
+    tools:context="com.wojdor.sharemoments.application.takephoto.TakePhotoActivity">
 
-    <FrameLayout
-        android:id="@+id/takePhotoPreviewFl"
+    <com.otaliastudios.cameraview.CameraView
+        android:id="@+id/takePhotoCameraView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/black" />
+        android:layout_height="match_parent" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/takePhotoTakePhotoFab"

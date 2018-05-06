@@ -1,4 +1,4 @@
-package com.wojdor.sharemoments.application.gallery
+package com.wojdor.sharemoments.application.takephoto
 
 import com.wojdor.sharemoments.application.base.BasePresenter
 import com.wojdor.sharemoments.application.base.BaseView
@@ -7,11 +7,15 @@ interface TakePhotoContract {
 
     interface View : BaseView<Presenter> {
 
-        fun checkCameraPermission()
+        fun capturePhoto()
+
+        fun openEditPhoto(photo: ByteArray)
     }
 
     interface Presenter : BasePresenter<View> {
 
-        fun requestCameraPermission()
+        fun takePhoto()
+
+        fun showEditPhoto(photo: ByteArray)
     }
 }

@@ -158,6 +158,9 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 
+# Sonarlint
+.idea/sonarlint/*
+
 ### AndroidStudio Patch ###
 
 !/gradle/wrapper/gradle-wrapper.jar

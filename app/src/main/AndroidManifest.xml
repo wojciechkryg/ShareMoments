@@ -14,7 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".application.gallery.GalleryActivity">
+        <activity
+            android:name=".application.gallery.GalleryActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -23,7 +25,8 @@
         </activity>
 
         <activity
-            android:name=".application.gallery.TakePhotoActivity"
+            android:name=".application.takephoto.TakePhotoActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
     </application>
 </manifest>

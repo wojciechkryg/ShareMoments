@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
+import com.wojdor.sharemoments.application.takephoto.TakePhotoActivity
 import kotlinx.android.synthetic.main.activity_gallery.*
 
 class GalleryActivity : BaseActivity(), GalleryContract.View {
@@ -13,10 +14,10 @@ class GalleryActivity : BaseActivity(), GalleryContract.View {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery)
-        initViews()
+        setupViews()
     }
 
-    private fun initViews() {
+    private fun setupViews() {
         galleryAddFab.setOnClickListener { presenter.showAddPhoto() }
     }
 
