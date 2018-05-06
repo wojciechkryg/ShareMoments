@@ -10,6 +10,8 @@ import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
 import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity
 import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity.Companion.FILENAME_EXTRA
+import com.wojdor.sharemoments.application.util.LocationProvider
+import com.wojdor.sharemoments.application.util.askForLocationPermission
 import kotlinx.android.synthetic.main.activity_take_photo.*
 
 class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
@@ -19,6 +21,8 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
     }
 
     override val presenter = TakePhotoPresenter(this)
+
+    private val locationProvider = LocationProvider(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,12 +54,16 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
     }
 
     private fun setupTakePhotoFab() {
-        takePhotoTakePhotoFab.setOnClickListener { presenter.takePhoto() }
+        takePhotoTakePhotoFab.setOnClickListener {
+            locationProvider.getLastLocation { takePhotoCameraView.location = it }
+            presenter.takePhoto()
+        }
     }
 
     override fun onResume() {
         super.onResume()
         takePhotoCameraView.start()
+        askForLocationPermission()
     }
 
     override fun onPause() {
