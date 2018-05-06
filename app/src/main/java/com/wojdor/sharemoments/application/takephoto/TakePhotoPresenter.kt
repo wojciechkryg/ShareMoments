@@ -7,6 +7,7 @@ class TakePhotoPresenter(override val view: TakePhotoContract.View) : TakePhotoC
     }
 
     override fun showEditPhoto(photo: ByteArray) {
-        view.openEditPhoto(photo)
+        view.storeTemporaryPhoto(photo)
+        view.openEditPhoto()
     }
 }

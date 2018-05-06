@@ -16,7 +16,6 @@
 
         <activity
             android:name=".application.splash.SplashActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -25,13 +24,12 @@
             </intent-filter>
         </activity>
 
-        <activity
-            android:name=".application.gallery.GalleryActivity"
-            android:screenOrientation="portrait" />
+        <activity android:name=".application.gallery.GalleryActivity" />
 
         <activity
             android:name=".application.takephoto.TakePhotoActivity"
-            android:screenOrientation="portrait"
             android:theme="@style/NoActionBar" />
+
+        <activity android:name=".application.editphoto.EditPhotoActivity" />
     </application>
 </manifest>

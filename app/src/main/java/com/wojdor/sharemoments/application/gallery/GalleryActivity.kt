@@ -22,7 +22,6 @@ class GalleryActivity : BaseActivity(), GalleryContract.View {
     }
 
     override fun openAddPhoto() {
-        val intent = Intent(this, TakePhotoActivity::class.java)
-        startActivity(intent)
+        startActivity(Intent(this, TakePhotoActivity::class.java))
     }
 }

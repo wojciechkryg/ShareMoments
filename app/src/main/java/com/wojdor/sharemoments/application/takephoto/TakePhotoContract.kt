@@ -9,7 +9,9 @@ interface TakePhotoContract {
 
         fun capturePhoto()
 
-        fun openEditPhoto(photo: ByteArray)
+        fun storeTemporaryPhoto(photo: ByteArray)
+
+        fun openEditPhoto()
     }
 
     interface Presenter : BasePresenter<View> {
