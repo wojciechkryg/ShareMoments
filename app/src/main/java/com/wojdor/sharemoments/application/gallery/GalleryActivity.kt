@@ -15,10 +15,16 @@ class GalleryActivity : BaseActivity(), GalleryContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_gallery)
         setupViews()
+        presenter.onAttach()
     }
 
     private fun setupViews() {
         galleryAddFab.setOnClickListener { presenter.showAddPhoto() }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        presenter.onDetach()
     }
 
     override fun openAddPhoto() {

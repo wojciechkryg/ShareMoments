@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="activity_gallery_add_fab_margin">24dp</dimen>
+
+    <dimen name="item_filter_container_cv_width">96dp</dimen>
+    <dimen name="item_filter_container_cv_height">96dp</dimen>
+</resources>

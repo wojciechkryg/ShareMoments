@@ -1,16 +1,15 @@
 package com.wojdor.sharemoments.application.gallery
 
-import com.wojdor.sharemoments.application.base.BasePresenter
-import com.wojdor.sharemoments.application.base.BaseView
+import com.wojdor.sharemoments.application.base.BaseContract
 
 interface GalleryContract {
 
-    interface View : BaseView<Presenter> {
+    interface View : BaseContract.BaseView<Presenter> {
 
         fun openAddPhoto()
     }
 
-    interface Presenter : BasePresenter<View> {
+    interface Presenter : BaseContract.BasePresenter<View> {
 
         fun showAddPhoto()
     }

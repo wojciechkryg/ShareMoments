@@ -1,3 +1,3 @@
 package com.wojdor.sharemoments.application.model
 
-class Filter
+data class Filter(val name: String, val resIcon: Int, val callback: () -> Unit)

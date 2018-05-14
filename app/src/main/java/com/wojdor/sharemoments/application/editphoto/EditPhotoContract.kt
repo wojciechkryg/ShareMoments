@@ -1,11 +1,13 @@
 package com.wojdor.sharemoments.application.editphoto
 
-import com.wojdor.sharemoments.application.base.BasePresenter
-import com.wojdor.sharemoments.application.base.BaseView
+import com.wojdor.sharemoments.application.base.BaseContract
 
 interface EditPhotoContract {
 
-    interface View : BaseView<Presenter>
+    interface View : BaseContract.BaseView<Presenter> {
 
-    interface Presenter : BasePresenter<View>
+        fun loadTemporaryPhoto()
+    }
+
+    interface Presenter : BaseContract.BasePresenter<View>
 }

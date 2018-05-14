@@ -28,6 +28,7 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_take_photo)
         setupViews()
+        presenter.onAttach()
     }
 
     private fun setupViews() {
@@ -74,6 +75,7 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
     override fun onDestroy() {
         super.onDestroy()
         takePhotoCameraView.destroy()
+        presenter.onDetach()
     }
 
     override fun capturePhoto() {
