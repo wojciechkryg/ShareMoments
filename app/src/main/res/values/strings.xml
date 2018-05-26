@@ -1,3 +1,14 @@
 <resources>
     <string name="app_name">ShareMoments</string>
+
+    <string name="invert">invert</string>
+    <string name="grayscale">grayscale</string>
+    <string name="sepia">sepia</string>
+    <string name="blur">blur</string>
+    <string name="kuwahara">kuwahara</string>
+    <string name="vignette">vignette</string>
+    <string name="sketch">sketch</string>
+    <string name="toon">toon</string>
+    <string name="pixel">pixel</string>
+    <string name="swirl">swirl</string>
 </resources>

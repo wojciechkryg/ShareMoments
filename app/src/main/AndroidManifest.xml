@@ -31,6 +31,8 @@
             android:name=".application.takephoto.TakePhotoActivity"
             android:theme="@style/NoActionBar" />
 
-        <activity android:name=".application.editphoto.EditPhotoActivity" />
+        <activity
+            android:name=".application.editphoto.EditPhotoActivity"
+            android:theme="@style/NoActionBar" />
     </application>
 </manifest>

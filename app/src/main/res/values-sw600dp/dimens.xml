@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <dimen name="small_padding">12dp</dimen>
+    <dimen name="medium_padding">24dp</dimen>
+    <dimen name="small_margin">12dp</dimen>
+    <dimen name="medium_margin">24dp</dimen>
+
     <dimen name="activity_gallery_add_fab_margin">24dp</dimen>
 
     <dimen name="item_filter_container_cv_width">96dp</dimen>

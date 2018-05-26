@@ -9,7 +9,7 @@ import com.otaliastudios.cameraview.GestureAction
 import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
 import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity
-import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity.Companion.FILENAME_EXTRA
+import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity.Companion.TEMPORARY_PHOTO_EXTRA
 import com.wojdor.sharemoments.application.util.LocationProvider
 import com.wojdor.sharemoments.application.util.askForLocationPermission
 import kotlinx.android.synthetic.main.activity_take_photo.*
@@ -17,12 +17,12 @@ import kotlinx.android.synthetic.main.activity_take_photo.*
 class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
 
     companion object {
-        const val TEMP_PHOTO_FILENAME = "tempFile"
+        const val TEMP_PHOTO_FILENAME = "photo.tmp"
     }
 
     override val presenter = TakePhotoPresenter(this)
 
-    private val locationProvider = LocationProvider(this)
+    private val locationProvider by lazy { LocationProvider(this) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,7 +95,7 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
 
     override fun openEditPhoto() {
         val intent = Intent(this, EditPhotoActivity::class.java)
-        intent.putExtra(FILENAME_EXTRA, TEMP_PHOTO_FILENAME)
+        intent.putExtra(TEMPORARY_PHOTO_EXTRA, TEMP_PHOTO_FILENAME)
         startActivity(intent)
     }
 }

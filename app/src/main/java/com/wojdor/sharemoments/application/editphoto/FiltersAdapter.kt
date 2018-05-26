@@ -8,20 +8,20 @@ import com.wojdor.sharemoments.application.model.Filter
 import com.wojdor.sharemoments.application.util.inflate
 import kotlinx.android.synthetic.main.item_filter.view.*
 
-class FiltersAdapter(private val filters: List<Filter>) : RecyclerView.Adapter<FiltersAdapter.FilterViewHolder>() {
+class FiltersAdapter(private val filters: List<Filter>, private val clickCallback: (Filter) -> Unit)
+    : RecyclerView.Adapter<FiltersAdapter.FilterViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = FilterViewHolder(parent.inflate(R.layout.item_filter))
 
     override fun getItemCount() = filters.size
 
-    override fun onBindViewHolder(holder: FilterViewHolder, position: Int) = holder.bind(filters[position])
+    override fun onBindViewHolder(holder: FilterViewHolder, position: Int) = holder.bind(filters[position], clickCallback)
 
     class FilterViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
-        fun bind(filter: Filter) = with(view) {
-            filterNameTv.text = filter.name
-            filterIconIv.setImageResource(filter.resIcon)
-            setOnClickListener { filter.callback() }
+        fun bind(filter: Filter, clickCallback: (Filter) -> Unit) = with(view) {
+            filterApplyFilterFab.setImageResource(filter.resIcon)
+            setOnClickListener { clickCallback(filter) }
         }
     }
 }
