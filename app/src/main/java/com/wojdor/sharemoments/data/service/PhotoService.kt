@@ -5,7 +5,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 
-object ImageService {
+object PhotoService {
 
     private val retrofit by lazy {
         Retrofit.Builder()
@@ -15,5 +15,5 @@ object ImageService {
                 .build()
     }
 
-    val instance by lazy { retrofit.create(ImageApi::class.java) }
+    val instance by lazy { retrofit.create(PhotoApi::class.java) }
 }
