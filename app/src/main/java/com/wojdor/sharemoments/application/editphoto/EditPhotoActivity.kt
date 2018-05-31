@@ -8,7 +8,11 @@ import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
 import com.wojdor.sharemoments.application.model.Filter
 import com.wojdor.sharemoments.application.util.FilterProvider
+import com.wojdor.sharemoments.application.util.ImageConverter
+import com.wojdor.sharemoments.domain.PhotoUpload
+import com.wojdor.sharemoments.domain.mapper.PhotoUploadMapper
 import kotlinx.android.synthetic.main.activity_edit_photo.*
+import java.util.*
 
 class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
@@ -18,21 +22,42 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
     override val presenter = EditPhotoPresenter(this)
 
-    private val filterProvider by lazy { FilterProvider() }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_photo)
-        setupFiltersRv()
+        setupViews()
         presenter.onAttach()
+    }
+
+    private fun setupViews() {
+        setupFiltersRv()
+        setupAcceptIv()
     }
 
     private fun setupFiltersRv() {
         with(editPhotoFiltersRv) {
-            adapter = FiltersAdapter(filterProvider.filters) { presenter.editImageWithFilter(it) }
+            adapter = FiltersAdapter(FilterProvider().filters) { presenter.editImageWithFilter(it) }
             layoutManager = LinearLayoutManager(this@EditPhotoActivity,
                     LinearLayoutManager.HORIZONTAL, false)
         }
+    }
+
+    private fun setupAcceptIv() {
+        editPhotoAcceptIv.setOnClickListener {
+            val photoUpload = createPhotoUploadModel()
+            val photoUploadModel = PhotoUploadMapper().map(photoUpload)
+            presenter.sendImage(photoUploadModel, {
+                // TODO: onSuccess
+            }, {
+                // TODO: onError
+            })
+        }
+    }
+
+    private fun createPhotoUploadModel(): PhotoUpload {
+        val image = ImageConverter().drawableToBase64String(editPhotoPhotoIv.drawable)
+        val date = Calendar.getInstance().time.toString()
+        return PhotoUpload(date, 0.0, 0.0, image, "jpeg", "image/jpeg")
     }
 
     override fun loadTemporaryPhoto() {

@@ -34,6 +34,8 @@ dependencies {
     implementation "com.android.support:design:$android_support_version"
     implementation "com.malinskiy:superrecyclerview:$superrecyclerview_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp_version"
     implementation "com.squareup.retrofit2:converter-gson:$gson_converter_version"
     implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version"
     implementation "io.reactivex.rxjava2:rxandroid:$rx_android_version"

@@ -18,5 +18,5 @@ interface PhotoApi {
     fun getMiniatures(@Query("count") count: Int, @Query("page") page: Int): Single<MiniaturesResponse>
 
     @POST("/api/Photo/UploadPhoto")
-    fun uploadPhoto(@Body photoUpload: PhotoUploadModel)
+    fun uploadPhoto(@Body photoUpload: PhotoUploadModel): Single<PhotoModel>
 }
