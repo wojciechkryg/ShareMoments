@@ -1,6 +1,7 @@
 package com.wojdor.sharemoments.application.gallery
 
 import com.wojdor.sharemoments.data.service.PhotoService
+import com.wojdor.sharemoments.domain.mapper.MiniatureMapper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -23,7 +24,7 @@ class GalleryPresenter(override val view: GalleryContract.View) : GalleryContrac
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    // TODO: show results
+                    view.showMiniatures(it.data.map { MiniatureMapper().map(it) })
                 }, {
                     // TODO: show error
                 }))

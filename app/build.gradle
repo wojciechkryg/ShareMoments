@@ -32,6 +32,7 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$constraint_layout_version"
     implementation "com.google.android.gms:play-services-location:$google_play_services_version"
     implementation "com.android.support:design:$android_support_version"
+    implementation "com.malinskiy:superrecyclerview:$superrecyclerview_version"
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$gson_converter_version"
     implementation "io.reactivex.rxjava2:rxkotlin:$rx_kotlin_version"

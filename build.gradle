@@ -8,10 +8,11 @@ buildscript {
 
         gradle_version = '3.0.1'
         kotlin_version = '1.2.41'
-        anko_version='0.10.4'
+        anko_version = '0.10.4'
         android_support_version = '27.1.1'
         constraint_layout_version = '1.1.0'
         google_play_services_version = '15.0.1'
+        superrecyclerview_version = '1.1.4'
         retrofit_version = '2.4.0'
         gson_converter_version = '2.3.0'
         rx_kotlin_version = '2.2.0'

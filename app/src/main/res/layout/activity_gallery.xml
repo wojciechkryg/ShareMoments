@@ -4,7 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.wojdor.sharemoments.application.gallery.TakePhotoActivity">
+    tools:context="com.wojdor.sharemoments.application.gallery.GalleryActivity">
+
+    <com.malinskiy.superrecyclerview.SuperRecyclerView
+        android:id="@+id/galleryMiniaturesRv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:listitem="@layout/item_miniature" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/galleryAddFab"
