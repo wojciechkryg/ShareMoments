@@ -2,7 +2,6 @@ package com.wojdor.sharemoments.application.util
 
 import android.graphics.Bitmap
 import android.graphics.Canvas
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.Base64
 import java.io.ByteArrayOutputStream
@@ -26,10 +25,19 @@ class ImageConverter {
         return bitmapToBase64String(bitmap)
     }
 
-    fun bitmapToBase64String(bitmap: Bitmap): String {
+    fun drawableToByteArray(drawable: Drawable): ByteArray {
+        val bitmap = drawableToBitmap(drawable)
+        return bitmapToByteArray(bitmap)
+    }
+
+    fun bitmapToByteArray(bitmap: Bitmap): ByteArray {
         val outputStream = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.PNG, PNG_QUALITY, outputStream)
-        val bytes = outputStream.toByteArray()
+        return outputStream.toByteArray()
+    }
+
+    fun bitmapToBase64String(bitmap: Bitmap): String {
+        val bytes = bitmapToByteArray(bitmap)
         return Base64.encodeToString(bytes, Base64.DEFAULT)
     }
 }

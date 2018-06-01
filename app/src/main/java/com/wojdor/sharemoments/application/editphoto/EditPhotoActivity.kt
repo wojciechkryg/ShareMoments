@@ -1,12 +1,15 @@
 package com.wojdor.sharemoments.application.editphoto
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.withCrossFade
 import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
+import com.wojdor.sharemoments.application.gallery.GalleryActivity
 import com.wojdor.sharemoments.application.model.Filter
+import com.wojdor.sharemoments.application.util.FileStorage
 import com.wojdor.sharemoments.application.util.FilterProvider
 import com.wojdor.sharemoments.application.util.ImageConverter
 import com.wojdor.sharemoments.domain.PhotoUpload
@@ -47,7 +50,7 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
             val photoUpload = createPhotoUploadModel()
             val photoUploadModel = PhotoUploadMapper().map(photoUpload)
             presenter.sendImage(photoUploadModel, {
-                // TODO: onSuccess
+                openGalleryActivity()
             }, {
                 // TODO: onError
             })
@@ -57,23 +60,25 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
     private fun createPhotoUploadModel(): PhotoUpload {
         val image = ImageConverter().drawableToBase64String(editPhotoPhotoIv.drawable)
         val date = Calendar.getInstance().time.toString()
+        // TODO: Pass proper location
         return PhotoUpload(date, 0.0, 0.0, image, "jpeg", "image/jpeg")
+    }
+
+    private fun openGalleryActivity() {
+        val intent = Intent(this, GalleryActivity::class.java).apply {
+            flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        }
+        startActivity(intent)
     }
 
     override fun loadTemporaryPhoto() {
         val filename = intent.extras.getString(TEMPORARY_PHOTO_EXTRA)
-        try {
-            openFileInput(filename).run {
-                Glide.with(this@EditPhotoActivity)
-                        .asBitmap()
-                        .load(readBytes())
-                        .transition(withCrossFade())
-                        .into(editPhotoPhotoIv)
-                close()
-            }
-        } catch (error: Exception) {
-            error.printStackTrace()
-        }
+        val bytes = FileStorage(this).obtain(filename)
+        Glide.with(this)
+                .asBitmap()
+                .load(bytes)
+                .transition(withCrossFade())
+                .into(editPhotoPhotoIv)
     }
 
     override fun applyImageFilter(filter: Filter) {

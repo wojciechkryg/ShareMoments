@@ -17,6 +17,6 @@ interface PhotoApi {
     @GET("/api/Photos/GetPaginedMiniatures")
     fun getMiniatures(@Query("count") count: Int, @Query("page") page: Int): Single<MiniaturesResponse>
 
-    @POST("/api/Photo/UploadPhoto")
+    @POST("/api/Photos/UploadPhoto")
     fun uploadPhoto(@Body photoUpload: PhotoUploadModel): Single<PhotoModel>
 }

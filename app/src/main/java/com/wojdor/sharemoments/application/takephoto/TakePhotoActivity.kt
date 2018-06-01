@@ -1,6 +1,5 @@
 package com.wojdor.sharemoments.application.takephoto
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import com.otaliastudios.cameraview.CameraListener
@@ -10,6 +9,7 @@ import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
 import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity
 import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity.Companion.TEMPORARY_PHOTO_EXTRA
+import com.wojdor.sharemoments.application.util.FileStorage
 import com.wojdor.sharemoments.application.util.LocationProvider
 import com.wojdor.sharemoments.application.util.askForLocationPermission
 import kotlinx.android.synthetic.main.activity_take_photo.*
@@ -83,14 +83,7 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
     }
 
     override fun storeTemporaryPhoto(photo: ByteArray) {
-        try {
-            openFileOutput(TEMP_PHOTO_FILENAME, Context.MODE_PRIVATE).run {
-                write(photo)
-                close()
-            }
-        } catch (error: Exception) {
-            error.printStackTrace()
-        }
+        FileStorage(this).store(TEMP_PHOTO_FILENAME, photo)
     }
 
     override fun openEditPhoto() {
