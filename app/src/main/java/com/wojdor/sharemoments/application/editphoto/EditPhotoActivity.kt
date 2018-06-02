@@ -21,12 +21,11 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
     companion object {
 
         const val TEMPORARY_PHOTO_EXTRA = "com.wojdor.sharemoments.application.editphoto.TEMP_PHOTO_EXTRA"
-
         const val LONGITUDE_EXTRA = "com.wojdor.sharemoments.application.editphoto.LONGITUDE_EXTRA"
         const val LATITUDE_EXTRA = "com.wojdor.sharemoments.application.editphoto.LATITUDE_EXTRA"
+
         private const val PHOTO_EXTENSION = "jpeg"
         private const val PHOTO_MIMETYPE = "image/jpeg"
-
     }
 
     override val presenter = EditPhotoPresenter(this)
@@ -45,7 +44,7 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
     private fun setupFiltersRv() {
         with(editPhotoFiltersRv) {
-            adapter = FiltersAdapter(FilterProvider().filters) { presenter.editImageWithFilter(it) }
+            adapter = FilterAdapter(FilterProvider().filters) { presenter.editImageWithFilter(it) }
             layoutManager = LinearLayoutManager(this@EditPhotoActivity,
                     LinearLayoutManager.HORIZONTAL, false)
         }
