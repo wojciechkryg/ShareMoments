@@ -1,6 +1,7 @@
 package com.wojdor.sharemoments.application.photodetails
 
 import com.wojdor.sharemoments.data.service.PhotoService
+import com.wojdor.sharemoments.domain.Photo
 import com.wojdor.sharemoments.domain.mapper.PhotoMapper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -17,12 +18,26 @@ class PhotoDetailsPresenter(override val view: PhotoDetailsContract.View) : Phot
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    view.showPhoto(PhotoMapper().map(it))
+                    val photo = PhotoMapper().map(it)
+                    handleDownloadedPhoto(photo)
                 }, {
                     // TODO: show error
                 })
         )
     }
+
+    private fun handleDownloadedPhoto(photo: Photo) {
+        view.showPhoto(photo)
+        handleLocation(photo)
+    }
+
+    private fun handleLocation(photo: Photo) {
+        if (isLocationInvalid(photo)) return
+        view.showLocationMenuItem()
+    }
+
+    private fun isLocationInvalid(photo: Photo) =
+            photo.longitude == null || photo.latitude == null
 
     override fun onDetach() {
         disposables.clear()

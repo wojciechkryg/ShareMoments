@@ -8,6 +8,8 @@ interface PhotoDetailsContract {
     interface View : BaseContract.BaseView<Presenter> {
 
         fun showPhoto(photo: Photo)
+
+        fun showLocationMenuItem()
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {
