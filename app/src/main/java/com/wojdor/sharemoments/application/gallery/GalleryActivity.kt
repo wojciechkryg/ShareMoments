@@ -13,8 +13,8 @@ import com.wojdor.sharemoments.domain.Miniature
 import kotlinx.android.synthetic.main.activity_gallery.*
 
 class GalleryActivity : BaseActivity(), GalleryContract.View {
-    companion object {
 
+    companion object {
         private const val MIN_NUMBER_OF_COLUMNS = 2
         private const val COLUMN_WIDTH_DIVIDER = 500
     }
