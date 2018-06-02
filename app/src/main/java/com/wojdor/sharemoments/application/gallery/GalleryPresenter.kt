@@ -8,16 +8,16 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class GalleryPresenter(override val view: GalleryContract.View) : GalleryContract.Presenter {
-    private val disposables by lazy { CompositeDisposable() }
 
     companion object {
-
         private const val PHOTOS_PER_PAGE = 10
     }
 
+    private val disposables by lazy { CompositeDisposable() }
+
     override fun onAttach() {
         // TODO: load proper page
-        downloadPhotos(1)
+        downloadPhotos(0)
     }
 
     private fun downloadPhotos(page: Int, quantity: Int = PHOTOS_PER_PAGE) {
@@ -25,7 +25,8 @@ class GalleryPresenter(override val view: GalleryContract.View) : GalleryContrac
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    view.showMiniatures(it.data.map { MiniatureMapper().map(it) })
+                    val mapper = MiniatureMapper()
+                    view.showMiniatures(it.data.map { mapper.map(it) })
                 }, {
                     // TODO: show error
                 }))
