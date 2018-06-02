@@ -1,16 +1,17 @@
 package com.wojdor.sharemoments.application.gallery
 
 import com.wojdor.sharemoments.data.service.PhotoService
+import com.wojdor.sharemoments.domain.Miniature
 import com.wojdor.sharemoments.domain.mapper.MiniatureMapper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class GalleryPresenter(override val view: GalleryContract.View) : GalleryContract.Presenter {
-
     private val disposables by lazy { CompositeDisposable() }
 
     companion object {
+
         private const val PHOTOS_PER_PAGE = 10
     }
 
@@ -28,6 +29,10 @@ class GalleryPresenter(override val view: GalleryContract.View) : GalleryContrac
                 }, {
                     // TODO: show error
                 }))
+    }
+
+    override fun showPhotoDetails(miniature: Miniature) {
+        view.openPhotoDetails(miniature.id)
     }
 
     override fun onDetach() {

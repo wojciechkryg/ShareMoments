@@ -29,6 +29,10 @@
         <activity android:name=".application.gallery.GalleryActivity" />
 
         <activity
+            android:name=".application.photodetails.PhotoDetailsActivity"
+            android:parentActivityName=".application.gallery.GalleryActivity" />
+
+        <activity
             android:name=".application.takephoto.TakePhotoActivity"
             android:theme="@style/NoActionBar" />
 

@@ -6,20 +6,22 @@ import android.support.v7.widget.GridLayoutManager
 import android.util.DisplayMetrics
 import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
+import com.wojdor.sharemoments.application.photodetails.PhotoDetailsActivity
+import com.wojdor.sharemoments.application.photodetails.PhotoDetailsActivity.Companion.PHOTO_ID_EXTRA
 import com.wojdor.sharemoments.application.takephoto.TakePhotoActivity
 import com.wojdor.sharemoments.domain.Miniature
 import kotlinx.android.synthetic.main.activity_gallery.*
 
 class GalleryActivity : BaseActivity(), GalleryContract.View {
-
     companion object {
+
         private const val MIN_NUMBER_OF_COLUMNS = 2
         private const val COLUMN_WIDTH_DIVIDER = 500
     }
 
     override val presenter: GalleryContract.Presenter = GalleryPresenter(this)
 
-    private val adapter by lazy { GalleryAdapter {} }
+    private val adapter by lazy { GalleryAdapter { presenter.showPhotoDetails(it) } }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,6 +57,13 @@ class GalleryActivity : BaseActivity(), GalleryContract.View {
 
     override fun openAddPhoto() {
         startActivity(Intent(this, TakePhotoActivity::class.java))
+    }
+
+    override fun openPhotoDetails(id: Int) {
+        val intent = Intent(this, PhotoDetailsActivity::class.java).apply {
+            putExtra(PHOTO_ID_EXTRA, id)
+        }
+        startActivity(intent)
     }
 
     override fun onDestroy() {
