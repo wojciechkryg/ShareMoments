@@ -8,6 +8,8 @@ import com.otaliastudios.cameraview.GestureAction
 import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
 import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity
+import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity.Companion.LATITUDE_EXTRA
+import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity.Companion.LONGITUDE_EXTRA
 import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity.Companion.TEMPORARY_PHOTO_EXTRA
 import com.wojdor.sharemoments.application.util.FileStorage
 import com.wojdor.sharemoments.application.util.LocationProvider
@@ -56,7 +58,10 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
 
     private fun setupTakePhotoFab() {
         takePhotoTakePhotoFab.setOnClickListener {
-            locationProvider.getLastLocation { takePhotoCameraView.location = it }
+            locationProvider.getLastLocation {
+                presenter.longitude = it?.longitude
+                presenter.latitude = it?.latitude
+            }
             presenter.takePhoto()
         }
     }
@@ -87,8 +92,11 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
     }
 
     override fun openEditPhoto() {
-        val intent = Intent(this, EditPhotoActivity::class.java)
-        intent.putExtra(TEMPORARY_PHOTO_EXTRA, TEMP_PHOTO_FILENAME)
+        val intent = Intent(this, EditPhotoActivity::class.java).apply {
+            putExtra(TEMPORARY_PHOTO_EXTRA, TEMP_PHOTO_FILENAME)
+            putExtra(LONGITUDE_EXTRA, presenter.longitude)
+            putExtra(LATITUDE_EXTRA, presenter.latitude)
+        }
         startActivity(intent)
     }
 }

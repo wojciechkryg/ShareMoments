@@ -18,9 +18,15 @@ import kotlinx.android.synthetic.main.activity_edit_photo.*
 import java.util.*
 
 class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
-
     companion object {
+
         const val TEMPORARY_PHOTO_EXTRA = "com.wojdor.sharemoments.application.editphoto.TEMP_PHOTO_EXTRA"
+
+        const val LONGITUDE_EXTRA = "com.wojdor.sharemoments.application.editphoto.LONGITUDE_EXTRA"
+        const val LATITUDE_EXTRA = "com.wojdor.sharemoments.application.editphoto.LATITUDE_EXTRA"
+        private const val PHOTO_EXTENSION = "jpeg"
+        private const val PHOTO_MIMETYPE = "image/jpeg"
+
     }
 
     override val presenter = EditPhotoPresenter(this)
@@ -47,7 +53,7 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
     private fun setupAcceptIv() {
         editPhotoAcceptIv.setOnClickListener {
-            val photoUpload = createPhotoUploadModel()
+            val photoUpload = createPhotoUpload()
             val photoUploadModel = PhotoUploadMapper().map(photoUpload)
             presenter.sendImage(photoUploadModel, {
                 openGalleryActivity()
@@ -57,11 +63,12 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
         }
     }
 
-    private fun createPhotoUploadModel(): PhotoUpload {
+    private fun createPhotoUpload(): PhotoUpload {
         val image = ImageConverter().drawableToBase64String(editPhotoPhotoIv.drawable)
         val date = Calendar.getInstance().time.toString()
-        // TODO: Pass proper location
-        return PhotoUpload(date, 0.0, 0.0, image, "jpeg", "image/jpeg")
+        val longitude = intent.extras.getDouble(LONGITUDE_EXTRA)
+        val latitude = intent.extras.getDouble(LATITUDE_EXTRA)
+        return PhotoUpload(date, longitude, latitude, image, PHOTO_EXTENSION, PHOTO_MIMETYPE)
     }
 
     private fun openGalleryActivity() {

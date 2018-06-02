@@ -15,6 +15,10 @@ interface TakePhotoContract {
 
     interface Presenter : BaseContract.BasePresenter<View> {
 
+        var longitude: Double?
+
+        var latitude: Double?
+
         fun takePhoto()
 
         fun showEditPhoto(photo: ByteArray)
