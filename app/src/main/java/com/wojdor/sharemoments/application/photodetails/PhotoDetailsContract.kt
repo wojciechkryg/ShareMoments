@@ -10,10 +10,14 @@ interface PhotoDetailsContract {
         fun showPhoto(photo: Photo)
 
         fun showLocationMenuItem()
+
+        fun openMapDialog(longitude: Double, latitude: Double)
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {
 
         fun downloadPhoto(id: Int)
+
+        fun showMapDialog()
     }
 }

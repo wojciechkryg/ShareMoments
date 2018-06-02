@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions.withCrossFade
 import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
+import com.wojdor.sharemoments.application.util.MapDialogProvider
 import com.wojdor.sharemoments.domain.Photo
 import kotlinx.android.synthetic.main.activity_photo_details.*
 
@@ -42,7 +43,7 @@ class PhotoDetailsActivity : BaseActivity(), PhotoDetailsContract.View {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action_location -> {
-                // TODO: show location
+                presenter.showMapDialog()
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -58,6 +59,10 @@ class PhotoDetailsActivity : BaseActivity(), PhotoDetailsContract.View {
 
     override fun showLocationMenuItem() {
         menu.findItem(R.id.action_location).isVisible = true
+    }
+
+    override fun openMapDialog(longitude: Double, latitude: Double) {
+        MapDialogProvider(this).showDialog(longitude, latitude)
     }
 
     override fun onDestroy() {

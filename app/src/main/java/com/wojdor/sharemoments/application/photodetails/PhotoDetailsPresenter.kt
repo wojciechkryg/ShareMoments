@@ -11,6 +11,8 @@ class PhotoDetailsPresenter(override val view: PhotoDetailsContract.View) : Phot
 
     private val disposables by lazy { CompositeDisposable() }
 
+    private lateinit var photo: Photo
+
     override fun onAttach() {}
 
     override fun downloadPhoto(id: Int) {
@@ -18,7 +20,7 @@ class PhotoDetailsPresenter(override val view: PhotoDetailsContract.View) : Phot
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
-                    val photo = PhotoMapper().map(it)
+                    photo = PhotoMapper().map(it)
                     handleDownloadedPhoto(photo)
                 }, {
                     // TODO: show error
@@ -38,6 +40,12 @@ class PhotoDetailsPresenter(override val view: PhotoDetailsContract.View) : Phot
 
     private fun isLocationInvalid(photo: Photo) =
             photo.longitude == null || photo.latitude == null
+
+    override fun showMapDialog() {
+        if (isLocationInvalid(photo)) return
+        // TODO : handle nullability
+        view.openMapDialog(photo.longitude!!, photo.latitude!!)
+    }
 
     override fun onDetach() {
         disposables.clear()
