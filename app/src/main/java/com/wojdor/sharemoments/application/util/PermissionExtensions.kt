@@ -10,8 +10,8 @@ import android.support.v4.content.ContextCompat
 const val REQUEST_PERMISSION_CODE = 200
 
 fun Activity.askForLocationPermission() {
-    if (isPermissionRequired(Manifest.permission.ACCESS_COARSE_LOCATION)) {
-        askForPermission(Manifest.permission.ACCESS_COARSE_LOCATION, REQUEST_PERMISSION_CODE)
+    if (isPermissionRequired(Manifest.permission.ACCESS_FINE_LOCATION)) {
+        askForPermission(Manifest.permission.ACCESS_FINE_LOCATION, REQUEST_PERMISSION_CODE)
     }
 }
 

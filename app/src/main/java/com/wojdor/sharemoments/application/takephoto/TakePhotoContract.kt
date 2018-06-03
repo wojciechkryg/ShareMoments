@@ -6,6 +6,10 @@ interface TakePhotoContract {
 
     interface View : BaseContract.BaseView<Presenter> {
 
+        fun enableLocationListener()
+
+        fun disableLocationListener()
+
         fun capturePhoto()
 
         fun storeTemporaryPhoto(photo: ByteArray)

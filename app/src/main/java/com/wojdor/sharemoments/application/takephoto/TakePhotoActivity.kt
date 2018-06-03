@@ -57,13 +57,7 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
     }
 
     private fun setupTakePhotoFab() {
-        takePhotoTakePhotoFab.setOnClickListener {
-            locationProvider.getLastLocation {
-                presenter.longitude = it?.longitude
-                presenter.latitude = it?.latitude
-            }
-            presenter.takePhoto()
-        }
+        takePhotoTakePhotoFab.setOnClickListener { presenter.takePhoto() }
     }
 
     override fun onResume() {
@@ -77,10 +71,25 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
         takePhotoCameraView.stop()
     }
 
+    override fun onStop() {
+        super.onStop()
+        presenter.onDetach()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         takePhotoCameraView.destroy()
-        presenter.onDetach()
+    }
+
+    override fun enableLocationListener() {
+        locationProvider.addLocationListener {
+            presenter.longitude = it?.longitude
+            presenter.latitude = it?.latitude
+        }
+    }
+
+    override fun disableLocationListener() {
+        locationProvider.removeLocationListener()
     }
 
     override fun capturePhoto() {
