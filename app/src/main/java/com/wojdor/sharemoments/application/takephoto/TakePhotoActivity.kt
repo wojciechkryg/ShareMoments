@@ -1,6 +1,8 @@
 package com.wojdor.sharemoments.application.takephoto
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import com.otaliastudios.cameraview.CameraListener
 import com.otaliastudios.cameraview.Gesture
@@ -13,6 +15,7 @@ import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity.Companion
 import com.wojdor.sharemoments.application.editphoto.EditPhotoActivity.Companion.TEMPORARY_PHOTO_EXTRA
 import com.wojdor.sharemoments.application.util.FileStorage
 import com.wojdor.sharemoments.application.util.LocationProvider
+import com.wojdor.sharemoments.application.util.REQUEST_LOCATION_PERMISSION_CODE
 import com.wojdor.sharemoments.application.util.askForLocationPermission
 import kotlinx.android.synthetic.main.activity_take_photo.*
 
@@ -64,6 +67,28 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
         super.onResume()
         takePhotoCameraView.start()
         askForLocationPermission()
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_LOCATION_PERMISSION_CODE -> {
+                handleLocationPermission(permissions, grantResults)
+            }
+        }
+    }
+
+    private fun handleLocationPermission(permissions: Array<out String>, grantResults: IntArray) {
+        if (permissions.contains(Manifest.permission.ACCESS_FINE_LOCATION)) {
+            val locationPermissionIndex = permissions.indexOf(Manifest.permission.ACCESS_FINE_LOCATION)
+            checkLocationPermission(grantResults[locationPermissionIndex])
+        }
+    }
+
+    private fun checkLocationPermission(grantResult: Int) {
+        if (grantResult == PackageManager.PERMISSION_GRANTED) {
+            enableLocationListener()
+        }
     }
 
     override fun onPause() {

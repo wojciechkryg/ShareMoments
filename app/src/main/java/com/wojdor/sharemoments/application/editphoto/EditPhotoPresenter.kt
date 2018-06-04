@@ -8,11 +8,14 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class EditPhotoPresenter(override val view: EditPhotoContract.View) : EditPhotoContract.Presenter {
-
     private val disposables by lazy { CompositeDisposable() }
 
     override fun editImageWithFilter(filter: Filter) {
         view.applyImageFilter(filter)
+    }
+
+    override fun deleteFilters() {
+        view.loadTemporaryPhoto()
     }
 
     override fun sendImage(photoUploadModel: PhotoUploadModel, onSuccess: () -> Unit, onError: () -> Unit) {

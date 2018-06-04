@@ -10,6 +10,4 @@
 
     <dimen name="item_filter_container_cv_width">128dp</dimen>
     <dimen name="item_filter_container_cv_height">128dp</dimen>
-
-    <dimen name="activity_edit_photo_accept_iv_size">96dp</dimen>
 </resources>

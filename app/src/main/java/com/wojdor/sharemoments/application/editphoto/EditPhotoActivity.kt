@@ -3,8 +3,6 @@ package com.wojdor.sharemoments.application.editphoto
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.resource.bitmap.BitmapTransitionOptions.withCrossFade
 import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
 import com.wojdor.sharemoments.application.gallery.GalleryActivity
@@ -12,14 +10,15 @@ import com.wojdor.sharemoments.application.model.Filter
 import com.wojdor.sharemoments.application.util.FileStorage
 import com.wojdor.sharemoments.application.util.FilterProvider
 import com.wojdor.sharemoments.application.util.ImageConverter
+import com.wojdor.sharemoments.application.util.ImageLoader
 import com.wojdor.sharemoments.domain.PhotoUpload
 import com.wojdor.sharemoments.domain.mapper.PhotoUploadMapper
 import kotlinx.android.synthetic.main.activity_edit_photo.*
 import java.util.*
 
 class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
-    companion object {
 
+    companion object {
         const val TEMPORARY_PHOTO_EXTRA = "com.wojdor.sharemoments.application.editphoto.TEMP_PHOTO_EXTRA"
         const val LONGITUDE_EXTRA = "com.wojdor.sharemoments.application.editphoto.LONGITUDE_EXTRA"
         const val LATITUDE_EXTRA = "com.wojdor.sharemoments.application.editphoto.LATITUDE_EXTRA"
@@ -30,6 +29,8 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
     override val presenter = EditPhotoPresenter(this)
 
+    private val imageLoader by lazy { ImageLoader(editPhotoPhotoIv) }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit_photo)
@@ -39,7 +40,9 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
     private fun setupViews() {
         setupFiltersRv()
-        setupAcceptIv()
+        setupDeleteFiltersFab()
+        setupAcceptFab()
+        setupSaveFab()
     }
 
     private fun setupFiltersRv() {
@@ -50,8 +53,12 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
         }
     }
 
-    private fun setupAcceptIv() {
-        editPhotoAcceptIv.setOnClickListener {
+    private fun setupDeleteFiltersFab() {
+        editPhotoDeleteFiltersFab.setOnClickListener { presenter.deleteFilters() }
+    }
+
+    private fun setupAcceptFab() {
+        editPhotoAcceptFab.setOnClickListener {
             val photoUpload = createPhotoUpload()
             val photoUploadModel = PhotoUploadMapper().map(photoUpload)
             presenter.sendImage(photoUploadModel, {
@@ -62,11 +69,17 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
         }
     }
 
+    private fun setupSaveFab() {
+        editPhotoSaveFab.setOnClickListener {
+            // TODO: save image
+        }
+    }
+
     private fun createPhotoUpload(): PhotoUpload {
         val image = ImageConverter().drawableToBase64String(editPhotoPhotoIv.drawable)
         val date = Calendar.getInstance().time.toString()
-        val longitude = intent.extras.getDouble(LONGITUDE_EXTRA)
-        val latitude = intent.extras.getDouble(LATITUDE_EXTRA)
+        val longitude = intent.extras[LONGITUDE_EXTRA] as? Double?
+        val latitude = intent.extras[LATITUDE_EXTRA] as? Double?
         return PhotoUpload(date, longitude, latitude, image, PHOTO_EXTENSION, PHOTO_MIMETYPE)
     }
 
@@ -80,11 +93,7 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
     override fun loadTemporaryPhoto() {
         val filename = intent.extras.getString(TEMPORARY_PHOTO_EXTRA)
         val bytes = FileStorage(this).obtain(filename)
-        Glide.with(this)
-                .asBitmap()
-                .load(bytes)
-                .transition(withCrossFade())
-                .into(editPhotoPhotoIv)
+        imageLoader.loadImage(bytes)
     }
 
     override fun applyImageFilter(filter: Filter) {

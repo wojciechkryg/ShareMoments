@@ -8,23 +8,29 @@ import com.bumptech.glide.load.Transformation
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions
 import com.bumptech.glide.request.RequestOptions
 
-class ImageViewConverter(private val imageView: ImageView) {
-
-    companion object {
-        const val START_X = 0
-        const val START_Y = 0
-    }
+class ImageLoader(private val imageView: ImageView) {
 
     private val context = imageView.context
     private val imageConverter by lazy { ImageConverter() }
     private var lastBitmap = imageConverter.drawableToBitmap(imageView.drawable)
 
-    fun convertImage(transformation: Transformation<Bitmap>) {
+    fun applyFilter(transformation: Transformation<Bitmap>) {
         val bitmap = imageConverter.drawableToBitmap(imageView.drawable)
         Glide.with(context)
                 .setDefaultRequestOptions(RequestOptions().placeholder(BitmapDrawable(context.resources, bitmap)))
                 .load(bitmap)
                 .apply(RequestOptions.bitmapTransform(transformation))
+                .transition(DrawableTransitionOptions.withCrossFade())
+                .into(imageView)
+        lastBitmap.recycle()
+        lastBitmap = bitmap
+    }
+
+    fun loadImage(bytes: ByteArray) {
+        val bitmap = imageConverter.drawableToBitmap(imageView.drawable)
+        Glide.with(context)
+                .setDefaultRequestOptions(RequestOptions().placeholder(BitmapDrawable(context.resources, bitmap)))
+                .load(bytes)
                 .transition(DrawableTransitionOptions.withCrossFade())
                 .into(imageView)
         lastBitmap.recycle()

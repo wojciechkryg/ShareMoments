@@ -10,12 +10,19 @@ class ImageConverter {
 
     companion object {
         private const val PNG_QUALITY = 100
+        private const val START_X = 0
+        private const val START_Y = 0
+        private const val DEFAULT_SIZE = 1
     }
 
     fun drawableToBitmap(drawable: Drawable): Bitmap {
-        val bitmap = Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        val bitmap = if (drawable.intrinsicWidth <= START_X || drawable.intrinsicHeight <= START_Y) {
+            Bitmap.createBitmap(DEFAULT_SIZE, DEFAULT_SIZE, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+        } else {
+            Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
+        }
         val canvas = Canvas(bitmap)
-        drawable.setBounds(ImageViewConverter.START_X, ImageViewConverter.START_Y, canvas.width, canvas.height)
+        drawable.setBounds(START_X, START_Y, canvas.width, canvas.height)
         drawable.draw(canvas)
         return bitmap
     }

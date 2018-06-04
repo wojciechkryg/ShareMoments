@@ -17,6 +17,8 @@ interface EditPhotoContract {
 
         fun editImageWithFilter(filter: Filter)
 
+        fun deleteFilters()
+
         fun sendImage(photoUploadModel: PhotoUploadModel, onSuccess: () -> Unit, onError: () -> Unit)
     }
 }
