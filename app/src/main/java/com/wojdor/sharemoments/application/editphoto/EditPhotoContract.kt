@@ -11,6 +11,8 @@ interface EditPhotoContract {
         fun loadTemporaryPhoto()
 
         fun applyImageFilter(filter: Filter)
+
+        fun saveBitmap()
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {
@@ -20,5 +22,7 @@ interface EditPhotoContract {
         fun deleteFilters()
 
         fun sendImage(photoUploadModel: PhotoUploadModel, onSuccess: () -> Unit, onError: () -> Unit)
+
+        fun saveImage()
     }
 }

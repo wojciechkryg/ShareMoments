@@ -1,5 +1,6 @@
 package com.wojdor.sharemoments.application.editphoto
 
+import android.Manifest
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
@@ -7,14 +8,10 @@ import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.base.BaseActivity
 import com.wojdor.sharemoments.application.gallery.GalleryActivity
 import com.wojdor.sharemoments.application.model.Filter
-import com.wojdor.sharemoments.application.util.FileStorage
-import com.wojdor.sharemoments.application.util.FilterProvider
-import com.wojdor.sharemoments.application.util.ImageConverter
-import com.wojdor.sharemoments.application.util.ImageLoader
+import com.wojdor.sharemoments.application.util.*
 import com.wojdor.sharemoments.domain.PhotoUpload
 import com.wojdor.sharemoments.domain.mapper.PhotoUploadMapper
 import kotlinx.android.synthetic.main.activity_edit_photo.*
-import java.util.*
 
 class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
@@ -71,16 +68,16 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
     private fun setupSaveFab() {
         editPhotoSaveFab.setOnClickListener {
-            // TODO: save image
+            askForWriteStoragePermission()
+            presenter.saveImage()
         }
     }
 
     private fun createPhotoUpload(): PhotoUpload {
         val image = ImageConverter().drawableToBase64String(editPhotoPhotoIv.drawable)
-        val date = Calendar.getInstance().time.toString()
         val longitude = intent.extras[LONGITUDE_EXTRA] as? Double?
         val latitude = intent.extras[LATITUDE_EXTRA] as? Double?
-        return PhotoUpload(date, longitude, latitude, image, PHOTO_EXTENSION, PHOTO_MIMETYPE)
+        return PhotoUpload(currentDate, longitude, latitude, image, PHOTO_EXTENSION, PHOTO_MIMETYPE)
     }
 
     private fun openGalleryActivity() {
@@ -98,6 +95,26 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
     override fun applyImageFilter(filter: Filter) {
         filter.applyFilter(editPhotoPhotoIv)
+    }
+
+    override fun saveBitmap() {
+        if (isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            val bitmap = ImageConverter().drawableToBitmap(editPhotoPhotoIv.drawable)
+            FileStorage(this).saveAsPicture(bitmap, currentDate)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            REQUEST_WRITE_PERMISSION_CODE -> handleWriteStoragePermissionResult(permissions, grantResults)
+        }
+    }
+
+    private fun handleWriteStoragePermissionResult(permissions: Array<out String>, grantResults: IntArray) {
+        checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, permissions, grantResults) {
+            saveBitmap()
+        }
     }
 
     override fun onDestroy() {

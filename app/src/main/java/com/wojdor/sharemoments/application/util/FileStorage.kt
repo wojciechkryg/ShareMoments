@@ -1,8 +1,16 @@
 package com.wojdor.sharemoments.application.util
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.os.Environment
+import java.io.File
+import java.io.FileOutputStream
 
 class FileStorage(private val context: Context) {
+
+    companion object {
+        private const val PICTURE_EXTENSION = ".png"
+    }
 
     fun store(filename: String, photo: ByteArray) {
         try {
@@ -26,5 +34,18 @@ class FileStorage(private val context: Context) {
             error.printStackTrace()
         }
         return bytes
+    }
+
+    fun saveAsPicture(bitmap: Bitmap, filename: String) {
+        val path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+        val file = File(path, "$filename$PICTURE_EXTENSION")
+        if (file.exists()) {
+            file.delete()
+        }
+        FileOutputStream(file).run {
+            bitmap.compress(Bitmap.CompressFormat.PNG, ImageConverter.PNG_QUALITY, this)
+            flush()
+            close()
+        }
     }
 }

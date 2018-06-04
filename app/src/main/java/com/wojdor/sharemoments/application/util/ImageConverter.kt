@@ -9,7 +9,8 @@ import java.io.ByteArrayOutputStream
 class ImageConverter {
 
     companion object {
-        private const val PNG_QUALITY = 100
+        const val PNG_QUALITY = 100
+
         private const val START_X = 0
         private const val START_Y = 0
         private const val DEFAULT_SIZE = 1

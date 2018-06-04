@@ -8,6 +8,7 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 
 class EditPhotoPresenter(override val view: EditPhotoContract.View) : EditPhotoContract.Presenter {
+
     private val disposables by lazy { CompositeDisposable() }
 
     override fun editImageWithFilter(filter: Filter) {
@@ -23,6 +24,10 @@ class EditPhotoPresenter(override val view: EditPhotoContract.View) : EditPhotoC
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ onSuccess() }, { onError() }))
+    }
+
+    override fun saveImage() {
+        view.saveBitmap()
     }
 
     override fun onAttach() {
