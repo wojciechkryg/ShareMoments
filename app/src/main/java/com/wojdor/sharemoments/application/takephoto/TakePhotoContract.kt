@@ -6,7 +6,7 @@ interface TakePhotoContract {
 
     interface View : BaseContract.BaseView<Presenter> {
 
-        fun enableLocationListener()
+        fun enableLocation()
 
         fun disableLocationListener()
 

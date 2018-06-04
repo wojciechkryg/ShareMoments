@@ -6,7 +6,7 @@ class TakePhotoPresenter(override val view: TakePhotoContract.View) : TakePhotoC
     override var latitude: Double? = null
 
     override fun onAttach() {
-        view.enableLocationListener()
+        view.enableLocation()
     }
 
     override fun onDetach() {

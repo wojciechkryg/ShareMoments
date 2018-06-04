@@ -87,7 +87,7 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
 
     private fun checkLocationPermission(grantResult: Int) {
         if (grantResult == PackageManager.PERMISSION_GRANTED) {
-            enableLocationListener()
+            enableLocation()
         }
     }
 
@@ -106,11 +106,17 @@ class TakePhotoActivity : BaseActivity(), TakePhotoContract.View {
         takePhotoCameraView.destroy()
     }
 
-    override fun enableLocationListener() {
+    override fun enableLocation() {
+        saveLastKnownLocation()
         locationProvider.addLocationListener {
             presenter.longitude = it?.longitude
             presenter.latitude = it?.latitude
         }
+    }
+
+    private fun saveLastKnownLocation() {
+        presenter.longitude = locationProvider.lastKnownLocation?.longitude
+        presenter.latitude = locationProvider.lastKnownLocation?.latitude
     }
 
     override fun disableLocationListener() {

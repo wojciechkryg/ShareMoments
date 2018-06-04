@@ -17,6 +17,16 @@ class LocationProvider(private val activity: Activity) {
         private const val MINIMUM_DISTANCE = 100F
     }
 
+    val lastKnownLocation: Location?
+        @SuppressLint("MissingPermission")
+        get() {
+            return if (activity.isPermissionGranted(Manifest.permission.ACCESS_FINE_LOCATION)) {
+                locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+            } else {
+                null
+            }
+        }
+
     private val locationManager by lazy { activity.getSystemService(Context.LOCATION_SERVICE) as LocationManager }
     private lateinit var locationListener: LocationListener
 
