@@ -9,6 +9,7 @@ import com.wojdor.sharemoments.application.base.BaseActivity
 import com.wojdor.sharemoments.application.photodetails.PhotoDetailsActivity
 import com.wojdor.sharemoments.application.photodetails.PhotoDetailsActivity.Companion.PHOTO_ID_EXTRA
 import com.wojdor.sharemoments.application.takephoto.TakePhotoActivity
+import com.wojdor.sharemoments.application.util.addPagination
 import com.wojdor.sharemoments.domain.Miniature
 import kotlinx.android.synthetic.main.activity_gallery.*
 
@@ -20,6 +21,7 @@ class GalleryActivity : BaseActivity(), GalleryContract.View {
     }
 
     override val presenter: GalleryContract.Presenter = GalleryPresenter(this)
+    override var isLoading: Boolean = false
 
     private val adapter by lazy { GalleryAdapter { presenter.showPhotoDetails(it) } }
 
@@ -37,8 +39,13 @@ class GalleryActivity : BaseActivity(), GalleryContract.View {
 
     private fun setupMiniaturesRv() {
         galleryMiniaturesRv.adapter = adapter
-        galleryMiniaturesRv.setLayoutManager(GridLayoutManager(this, calculateNumberOfColumns()))
+        val layoutManager = GridLayoutManager(this, calculateNumberOfColumns())
+        galleryMiniaturesRv.layoutManager = layoutManager
+        galleryMiniaturesRv.addPagination(layoutManager,
+                { shouldLoadMore() }, { presenter.downloadNextPageOfMiniatures() })
     }
+
+    private fun shouldLoadMore() = !isLoading && !presenter.isLastPage
 
     private fun calculateNumberOfColumns(): Int {
         val displayMetrics = DisplayMetrics()
@@ -51,8 +58,8 @@ class GalleryActivity : BaseActivity(), GalleryContract.View {
         }
     }
 
-    override fun showMiniatures(miniatures: List<Miniature>) {
-        adapter.miniatures = miniatures
+    override fun addMiniatures(miniatures: List<Miniature>) {
+        adapter.addMiniatures(miniatures)
     }
 
     override fun openAddPhoto() {

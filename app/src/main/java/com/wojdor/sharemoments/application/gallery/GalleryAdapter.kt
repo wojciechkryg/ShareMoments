@@ -9,20 +9,23 @@ import com.wojdor.sharemoments.R
 import com.wojdor.sharemoments.application.util.inflate
 import com.wojdor.sharemoments.domain.Miniature
 import kotlinx.android.synthetic.main.item_miniature.view.*
-import kotlin.properties.Delegates
 
 class GalleryAdapter(private val onClick: (Miniature) -> Unit)
     : RecyclerView.Adapter<GalleryAdapter.MiniatureViewHolder>() {
 
-    var miniatures by Delegates.observable(emptyList<Miniature>()) { _, _, _ ->
-        notifyDataSetChanged()
-    }
+    private var miniatures = mutableListOf<Miniature>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = MiniatureViewHolder(parent.inflate(R.layout.item_miniature))
 
     override fun getItemCount() = miniatures.size
 
     override fun onBindViewHolder(holder: MiniatureViewHolder, position: Int) = holder.bind(miniatures[position], onClick)
+
+    fun addMiniatures(newMiniatures: List<Miniature>) {
+        val insertIndex = miniatures.size
+        miniatures.addAll(newMiniatures)
+        notifyItemInserted(insertIndex)
+    }
 
     class MiniatureViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 

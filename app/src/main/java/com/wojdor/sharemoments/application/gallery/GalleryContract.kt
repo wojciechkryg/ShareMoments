@@ -7,7 +7,9 @@ interface GalleryContract {
 
     interface View : BaseContract.BaseView<Presenter> {
 
-        fun showMiniatures(miniatures: List<Miniature>)
+        var isLoading: Boolean
+
+        fun addMiniatures(miniatures: List<Miniature>)
 
         fun openAddPhoto()
 
@@ -15,6 +17,10 @@ interface GalleryContract {
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {
+
+        val isLastPage: Boolean
+
+        fun downloadNextPageOfMiniatures()
 
         fun showAddPhoto()
 
