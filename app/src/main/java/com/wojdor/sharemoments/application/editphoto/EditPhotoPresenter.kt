@@ -1,8 +1,9 @@
 package com.wojdor.sharemoments.application.editphoto
 
 import com.wojdor.sharemoments.application.model.Filter
-import com.wojdor.sharemoments.data.model.PhotoUploadModel
 import com.wojdor.sharemoments.data.service.PhotoService
+import com.wojdor.sharemoments.domain.PhotoUpload
+import com.wojdor.sharemoments.domain.mapper.PhotoUploadMapper
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -19,11 +20,17 @@ class EditPhotoPresenter(override val view: EditPhotoContract.View) : EditPhotoC
         view.loadTemporaryPhoto()
     }
 
-    override fun sendImage(photoUploadModel: PhotoUploadModel, onSuccess: () -> Unit, onError: () -> Unit) {
+    override fun sendImage(photoUpload: PhotoUpload) {
+        val photoUploadModel = PhotoUploadMapper().map(photoUpload)
         disposables.add(PhotoService.instance.uploadPhoto(photoUploadModel)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ onSuccess() }, { onError() }))
+                .subscribe({
+                    view.openGallery()
+                    view.dismissLoading()
+                }, {
+                    view.dismissLoading()
+                }))
     }
 
     override fun saveImage() {

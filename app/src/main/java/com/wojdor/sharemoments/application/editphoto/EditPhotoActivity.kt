@@ -10,8 +10,9 @@ import com.wojdor.sharemoments.application.gallery.GalleryActivity
 import com.wojdor.sharemoments.application.model.Filter
 import com.wojdor.sharemoments.application.util.*
 import com.wojdor.sharemoments.domain.PhotoUpload
-import com.wojdor.sharemoments.domain.mapper.PhotoUploadMapper
 import kotlinx.android.synthetic.main.activity_edit_photo.*
+import org.jetbrains.anko.doAsync
+import org.jetbrains.anko.uiThread
 
 class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
@@ -56,13 +57,8 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
     private fun setupAcceptFab() {
         editPhotoAcceptFab.setOnClickListener {
-            val photoUpload = createPhotoUpload()
-            val photoUploadModel = PhotoUploadMapper().map(photoUpload)
-            presenter.sendImage(photoUploadModel, {
-                openGalleryActivity()
-            }, {
-                // TODO: onError
-            })
+            showLoading()
+            doAsync { presenter.sendImage(createPhotoUpload()) }
         }
     }
 
@@ -80,7 +76,7 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
         return PhotoUpload(currentDate, longitude, latitude, image, PHOTO_EXTENSION, PHOTO_MIMETYPE)
     }
 
-    private fun openGalleryActivity() {
+    override fun openGallery() {
         val intent = Intent(this, GalleryActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
@@ -99,8 +95,12 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
 
     override fun saveBitmap() {
         if (isPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            val bitmap = ImageConverter().drawableToBitmap(editPhotoPhotoIv.drawable)
-            FileStorage(this).saveAsPicture(bitmap, currentDate)
+            showLoading()
+            doAsync {
+                val bitmap = ImageConverter().drawableToBitmap(editPhotoPhotoIv.drawable)
+                FileStorage(this@EditPhotoActivity).saveAsPicture(bitmap, currentDate)
+                uiThread { dismissLoading() }
+            }
         }
     }
 
@@ -115,6 +115,14 @@ class EditPhotoActivity : BaseActivity(), EditPhotoContract.View {
         checkPermissionGranted(Manifest.permission.WRITE_EXTERNAL_STORAGE, permissions, grantResults) {
             saveBitmap()
         }
+    }
+
+    override fun showLoading() {
+        loadingDialog.show()
+    }
+
+    override fun dismissLoading() {
+        loadingDialog.dismiss()
     }
 
     override fun onDestroy() {

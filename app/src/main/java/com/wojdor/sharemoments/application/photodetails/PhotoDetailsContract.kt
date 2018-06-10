@@ -12,6 +12,10 @@ interface PhotoDetailsContract {
         fun showLocationMenuItem()
 
         fun openMapDialog(longitude: Double, latitude: Double)
+
+        fun showLoading()
+
+        fun dismissLoading()
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {

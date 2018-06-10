@@ -16,14 +16,16 @@ class PhotoDetailsPresenter(override val view: PhotoDetailsContract.View) : Phot
     override fun onAttach() {}
 
     override fun downloadPhoto(id: Int) {
+        view.showLoading()
         disposables.add(PhotoService.instance.getPhoto(id)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({
                     photo = PhotoMapper().map(it)
                     handleDownloadedPhoto(photo)
+                    view.dismissLoading()
                 }, {
-                    // TODO: show error
+                    view.dismissLoading()
                 })
         )
     }
@@ -43,8 +45,7 @@ class PhotoDetailsPresenter(override val view: PhotoDetailsContract.View) : Phot
 
     override fun showMapDialog() {
         if (isLocationInvalid(photo)) return
-        // TODO : handle nullability
-        view.openMapDialog(photo.longitude!!, photo.latitude!!)
+        view.openMapDialog(photo.longitude as Double, photo.latitude as Double)
     }
 
     override fun onDetach() {

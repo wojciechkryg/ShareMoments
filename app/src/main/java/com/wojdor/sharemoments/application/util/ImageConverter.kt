@@ -9,7 +9,7 @@ import java.io.ByteArrayOutputStream
 class ImageConverter {
 
     companion object {
-        const val PNG_QUALITY = 100
+        const val PNG_QUALITY = 80
 
         private const val START_X = 0
         private const val START_Y = 0
@@ -18,7 +18,7 @@ class ImageConverter {
 
     fun drawableToBitmap(drawable: Drawable): Bitmap {
         val bitmap = if (drawable.intrinsicWidth <= START_X || drawable.intrinsicHeight <= START_Y) {
-            Bitmap.createBitmap(DEFAULT_SIZE, DEFAULT_SIZE, Bitmap.Config.ARGB_8888); // Single color bitmap will be created of 1x1 pixel
+            Bitmap.createBitmap(DEFAULT_SIZE, DEFAULT_SIZE, Bitmap.Config.ARGB_8888) // Single color bitmap will be created of 1x1 pixel
         } else {
             Bitmap.createBitmap(drawable.intrinsicWidth, drawable.intrinsicHeight, Bitmap.Config.ARGB_8888)
         }

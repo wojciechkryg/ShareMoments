@@ -65,6 +65,14 @@ class PhotoDetailsActivity : BaseActivity(), PhotoDetailsContract.View {
         MapDialogProvider(this).showDialog(longitude, latitude)
     }
 
+    override fun showLoading() {
+        loadingDialog.show()
+    }
+
+    override fun dismissLoading() {
+        loadingDialog.dismiss()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         presenter.onDetach()

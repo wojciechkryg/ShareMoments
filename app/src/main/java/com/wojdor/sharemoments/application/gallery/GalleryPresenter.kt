@@ -30,7 +30,7 @@ class GalleryPresenter(override val view: GalleryContract.View) : GalleryContrac
     }
 
     override fun downloadNextPageOfMiniatures() {
-        view.isLoading = true
+        view.showLoading()
         disposables.add(PhotoService.instance.getMiniatures(PAGE_SIZE, page)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -38,10 +38,9 @@ class GalleryPresenter(override val view: GalleryContract.View) : GalleryContrac
                     page++
                     metadata = metadataMapper.map(it.metaData)
                     view.addMiniatures(it.data.map { miniatureMapper.map(it) })
-                    view.isLoading = false
+                    view.dismissLoading()
                 }, {
-                    // TODO: show error
-                    view.isLoading = false
+                    view.dismissLoading()
                 }))
     }
 

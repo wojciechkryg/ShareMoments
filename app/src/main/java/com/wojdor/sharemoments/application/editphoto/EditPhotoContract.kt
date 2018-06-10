@@ -2,7 +2,7 @@ package com.wojdor.sharemoments.application.editphoto
 
 import com.wojdor.sharemoments.application.base.BaseContract
 import com.wojdor.sharemoments.application.model.Filter
-import com.wojdor.sharemoments.data.model.PhotoUploadModel
+import com.wojdor.sharemoments.domain.PhotoUpload
 
 interface EditPhotoContract {
 
@@ -13,6 +13,12 @@ interface EditPhotoContract {
         fun applyImageFilter(filter: Filter)
 
         fun saveBitmap()
+
+        fun openGallery()
+
+        fun showLoading()
+
+        fun dismissLoading()
     }
 
     interface Presenter : BaseContract.BasePresenter<View> {
@@ -21,7 +27,7 @@ interface EditPhotoContract {
 
         fun deleteFilters()
 
-        fun sendImage(photoUploadModel: PhotoUploadModel, onSuccess: () -> Unit, onError: () -> Unit)
+        fun sendImage(photoUploadModel: PhotoUpload)
 
         fun saveImage()
     }

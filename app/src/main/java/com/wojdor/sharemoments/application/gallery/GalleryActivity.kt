@@ -21,7 +21,6 @@ class GalleryActivity : BaseActivity(), GalleryContract.View {
     }
 
     override val presenter: GalleryContract.Presenter = GalleryPresenter(this)
-    override var isLoading: Boolean = false
 
     private val adapter by lazy { GalleryAdapter { presenter.showPhotoDetails(it) } }
 
@@ -45,7 +44,7 @@ class GalleryActivity : BaseActivity(), GalleryContract.View {
                 { shouldLoadMore() }, { presenter.downloadNextPageOfMiniatures() })
     }
 
-    private fun shouldLoadMore() = !isLoading && !presenter.isLastPage
+    private fun shouldLoadMore() = !loadingDialog.isShowing && !presenter.isLastPage
 
     private fun calculateNumberOfColumns(): Int {
         val displayMetrics = DisplayMetrics()
@@ -71,6 +70,14 @@ class GalleryActivity : BaseActivity(), GalleryContract.View {
             putExtra(PHOTO_ID_EXTRA, id)
         }
         startActivity(intent)
+    }
+
+    override fun showLoading() {
+        loadingDialog.show()
+    }
+
+    override fun dismissLoading() {
+        loadingDialog.dismiss()
     }
 
     override fun onDestroy() {
